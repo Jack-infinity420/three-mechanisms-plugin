@@ -1,5 +1,8 @@
 # 三大工作机制插件
 
+## 请示报告 · 督促检查 · 信息服务
+
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-v2.0%2B-blue)](https://claude.ai/code)
 [![Cursor](https://img.shields.io/badge/Cursor-supported-purple)](https://cursor.sh)
