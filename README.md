@@ -1,6 +1,28 @@
-# 三大工作机制 — AI 智能体行为准则插件
+# 三大工作机制插件
 
-> 一套轻量、跨框架的 AI 编码智能体行为规范。让智能体在工作中做到：**不懂就问，边做边查，做完就说。**
+- 将科学的组织管理制度，做成 agent 插件，装在 Claude Code、Cursor 等主流 AI 编码工具上。
+- 铁一般的制度锻造铁一般的智能体。
+- 铁一般的智能体创造铁一般的生产力。
+
+> > <br />
+
+当前AI编码智能体队伍中，三类问题表现突出：
+
+**一曰不请示不报告。** 该请示的不请示，擅自拍板；该报告的不报告，自行其是。遇歧义不问、遇分歧不商，情况不明决心大，边界不清主意多。拿不准的敢定，划不清的敢闯，把越界当魄力，把擅断当果断。
+
+**二曰不检查不落实。** 重部署轻检查，做没做靠自觉；重产出轻质量，对不对没人把关。该做的没做，做了的不对。查而不纠、错而不改，一本正经瞎糊弄，把应付当完成，把交差当交卷。
+
+**三曰不透明不汇报。** 过程看不见，进度摸不着。干到哪算哪，既不汇报阶段进展，也不预警风险。心中无数，手中无策，一问三不知，协作全靠猜。把沉默当专注，把在位当到位。
+
+这些问题的根源，不在模型能力不够，而是缺少一套科学的、经过我们实践反复检验的工作制度来约束行为、规范流程、压实责任。
+
+基于此，我与 Claude Code（deepseek-V4） 将**三大工作机制**——请示报告、督促检查、信息服务——系统化为一套 agent 行为准则插件，应用于日常编码场景，力求锻造一支**听指挥、会干活、作风优**的 agent 队伍。
+
+> 归结起来，就是：
+>
+> - 请示要实，执行要力，督促要严，信息要畅。
+
+> - 不懂就问，不决则报；边做边查，即错即改；阶段必结，信息必达。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-v2.0%2B-blue)](https://claude.ai/code)
@@ -8,195 +30,176 @@
 [![Codex](https://img.shields.io/badge/Codex%20CLI-supported-orange)](https://github.com/openai/codex)
 [![TRAE](https://img.shields.io/badge/TRAE-supported-teal)](https://trae.ai)
 
----
+***
 
-## 一句话
+## 快速开始
 
-安装后，AI 智能体会主动请示关键决策、自我审查代码质量、在每个里程碑汇报进展——而不是闷头干完才告诉你。
+### Claude Code
 
----
+```bash
+# 终端或 Claude Code 内执行
+/plugin marketplace add Jack-infinity420/three-mechanisms-plugin
+/plugin install three-mechanisms
+```
+
+安装完正常下任务，智能体自动按三大机制行事。可手动load skill：
+
+| 命令      | 做什么                   |
+| ------- | --------------------- |
+| `/qsbg` | 请示报告 — 检查当前是否需要向你请示   |
+| `/dcjc` | 督促检查 — 做一轮自我审查，输出质量报告 |
+| `/xxfw` | 信息服务 — 输出当前阶段进展报告     |
+
+**怎么用**：在 Claude Code 对话中直接敲 `/qsbg` 回车。
+
+```
+> /qsbg
+智能体：当前任务无方案选择困境，进度正常，无需请示。
+
+> /dcjc
+智能体：⚠️ 发现 install.sh 第 23 行引用了不存在的文件...
+
+> /xxfw
+智能体：输出当前项目进展报告表格，含进度百分比和风险项。
+```
+
+### Cursor
+
+```bash
+git clone https://github.com/Jack-infinity420/three-mechanisms-plugin.git
+cd three-mechanisms-plugin
+./install.sh /path/to/your-cursor-project
+```
+
+脚本检测到 `.cursor/` 后，自动安装 `.cursor/rules/three-mechanisms.mdc`（`alwaysApply: true`）。每次在 Composer / Agent 模式下打开项目，规则自动加载，Skills 自动触发。
+
+**没有** **`/`** **命令**，全是自动的。在 Composer 里问 "描述你的三大工作机制" 验证加载。
+
+### Codex CLI
+
+```bash
+git clone https://github.com/Jack-infinity420/three-mechanisms-plugin.git
+cd three-mechanisms-plugin
+./install.sh /path/to/your-codex-project
+```
+
+脚本安装 `AGENTS.md` 和 `skills/` 到项目目录。Codex 启动时自动加载 `AGENTS.md`，Skills 自动触发。跟 Claude Code 一样正常下任务即可。
+
+### TRAE
+
+```bash
+git clone https://github.com/Jack-infinity420/three-mechanisms-plugin.git
+cd three-mechanisms-plugin
+./install.sh /path/to/your-trae-project
+```
+
+脚本安装 `.trae/rules/three-mechanisms.md` 和 `skills/`。Builder / SOLO 模式下自动加载规则，Skills 自动触发。
+
+***
+
+> **通用安装**：不确定用哪个框架？直接跑安装脚本，它会自动检测并安装对应格式。
+
+***
 
 ## 它做什么
 
-| 机制 | `/` 命令 | 触发时机 | 效果 |
-|------|---------|---------|------|
-| **请示报告** | `/qsbg` | 方案选择、需求模糊、架构调整、大规模改动、多智能体并行 | 智能体暂停，列出方案对比，请你决策 |
-| **督促检查** | `/dcjc` | 代码质量偏离、进度滞后 >50%、工具连续失败、安全漏洞 | 智能体主动输出质量告警 + 修复建议 |
-| **信息服务** | `/xxfw` | 里程碑完成、重大风险出现、任务结束 | 智能体输出结构化进展报告表格 |
+插件为 AI 智能体建立三条工作纪律：
 
-**自动触发**：智能体根据场景自动激活对应机制，不需要你手动调命令。`/qsbg`、`/dcjc`、`/xxfw` 是你主动"遥控"的入口。
+| 机制       | 规则               | 触发时机                    |
+| -------- | ---------------- | ----------------------- |
+| **请示报告** | 方案不唯一时暂停请示，不自行决断 | 需求模糊、技术选型、架构调整、大规模改动    |
+| **督促检查** | 执行中自我审查，发现问题立即告警 | 代码质量偏离、进度滞后 >50%、工具连续失败 |
+| **信息服务** | 里程碑必须输出结构化进展报告   | 阶段完成、重大风险、任务结束          |
 
----
+自动触发，不需要你手动调命令。`/qsbg`、`/dcjc`、`/xxfw` 是你主动"遥控"的入口。
+
+***
 
 ## 兼容框架
 
-| 框架 | 安装方式 | `/` 命令 | Skills 自动触发 |
-|------|---------|---------|----------------|
-| **Claude Code** | `install.sh` / `install.ps1` | ✅ `/qsbg` `/dcjc` `/xxfw` | ✅ |
-| **Cursor** | `install.sh` / `install.ps1` | — `.mdc` 自动加载 | ✅ |
-| **Codex CLI** | `install.sh` / `install.ps1` | — `AGENTS.md` 加载 | ✅ |
-| **TRAE** | `install.sh` / `install.ps1` | — rules 自动加载 | ✅ |
-| **GitHub Copilot** | `install.sh` / `install.ps1` | — `copilot-instructions.md` | — |
-| **Windsurf** | `install.sh` / `install.ps1` | — rules 自动加载 | ✅ |
-| **Aider** | 手动配置 | — `read: AGENTS.md` | — |
+| 框架                 | 安装方式                             | `/` 命令 | Skills |
+| ------------------ | -------------------------------- | ------ | ------ |
+| **Claude Code**    | `/plugin install` 或 `install.sh` | ✅      | ✅      |
+| **Cursor**         | `install.sh` / `install.ps1`     | —      | ✅      |
+| **Codex CLI**      | `install.sh` / `install.ps1`     | —      | ✅      |
+| **TRAE**           | `install.sh` / `install.ps1`     | —      | ✅      |
+| **GitHub Copilot** | `install.sh` / `install.ps1`     | —      | —      |
+| **Windsurf**       | `install.sh` / `install.ps1`     | —      | ✅      |
+| **Aider**          | 手动配置 `read: AGENTS.md`           | —      | —      |
 
----
+***
 
-## 安装
-
-### 方式一：一键安装（推荐）
-
-```bash
-# 1. 克隆插件仓库
-git clone https://github.com/Jack-infinity420/three-mechanisms-plugin.git
-cd three-mechanisms-plugin
-
-# 2. 安装到你的项目
-./install.sh /path/to/your-project
-
-# Windows PowerShell
-.\install.ps1 -ProjectRoot C:\path\to\your-project
-```
-
-安装脚本会自动检测项目使用的 AI 编码框架，安装对应格式的规则文件。
-
-**安全设计**：默认条件追加，不会覆盖已有配置。如需强制覆盖已有文件：
-
-```bash
-./install.sh --force /path/to/your-project
-.\install.ps1 -Force -ProjectRoot C:\path\to\your-project
-```
-
-### 方式二：Claude Code 插件市场
-
-等待仓库发布后，通过 Claude Code 插件市场安装：
-
-```bash
-claude plugin marketplace add Jack-infinity420/three-mechanisms-plugin
-claude plugin install three-mechanisms@Jack-infinity420/three-mechanisms-plugin
-```
-
-### 方式三：仅核心规则
-
-只想用最简规则？复制 `AGENTS.md` 到项目根目录，在 `CLAUDE.md` 开头加一行 `@AGENTS.md`。
-
----
-
-## 怎么用
-
-### 日常就是正常下任务
-
-你不需要改变任何习惯。正常下任务——智能体行为变化如下：
+## 效果
 
 ```
-# 你："帮我重构认证模块"
-智能体：先问清楚——什么框架？JWT/Session？要不要兼容旧接口？——确认完再动手
-      （请示报告 自动触发）
+之前："帮我重构认证模块"
+智能体：直接写代码，中途可能跑偏，做完才告诉你
 
-# 中途智能体发现问题
-智能体：⚠️ 质量告警：redis 连接失败 3 次，建议先排查网络配置再继续
-      （督促检查 自动触发）
-
-# 完成一个阶段
-智能体：输出进展报告表格——已完成/进行中/未开始，进度百分比，下一步计划
-      （信息服务 自动触发）
+之后："帮我重构认证模块"  
+智能体：先问清楚——框架？JWT/Session？兼容旧接口？——确认完再动手
+      中途遇到问题主动告警，每个阶段输出进展报告
 ```
 
-### 主动遥控
+***
 
-觉得智能体沉默太久、担心跑偏、或者想主动做质量审查时：
+## 与其他插件共存
 
-| 命令 | 效果 |
-|------|------|
-| `/qsbg` | 智能体重新审视当前任务，检查是否需要向你请示 |
-| `/dcjc` | 智能体对当前工作做一轮自我审查，输出质量报告 |
-| `/xxfw` | 智能体输出当前阶段的进展报告 |
+采用三层隔离架构，不会覆盖 oh-my-claudecode 等其他插件：
 
----
+- **`AGENTS.md`** — 已存在则追加（含 `<!-- BEGIN/END -->` 标记）
+- **`CLAUDE.md`** — 已存在则只提示手动添加 `@AGENTS.md`，绝不自动修改
+- **`skills/`** — 逐目录检测，同名 skill 跳过并警告
+- **`.claude/rules/`** — 独立文件，天然隔离
+- **`.claude/commands/`** — 逐文件检测，不覆盖已有命令
 
-## 为什么需要
+需要强制覆盖时加 `--force` / `-Force`。
 
-AI 编码智能体越来越强，但普遍存在三个行为问题：
-
-1. **不请示** — 收到模糊任务直接动手，自行决断架构决策
-2. **不自查** — 发现问题自行消化，拖延上报，错过修正窗口
-3. **不汇报** — 做完才告诉你，中间状态你完全不知
-
-这套机制用极简的三条规则解决这三个问题。它不增加你的负担——你继续正常提需求，智能体自动改变行为。
-
----
+***
 
 ## 项目结构
 
 ```
-three-mechanisms-plugin/
 ├── AGENTS.md                    # 核心行为准则（跨框架真源）
 ├── CLAUDE.md                    # 薄壳：@AGENTS.md
-├── README.md                    # 本文件
-├── install.sh                   # Linux / macOS 安装脚本
-├── install.ps1                  # Windows PowerShell 安装脚本
-├── .claude-plugin/
-│   └── plugin.json              # Claude Code 插件清单
-├── .claude/
-│   ├── commands/
-│   │   ├── qsbg.md              # /qsbg 命令
-│   │   ├── dcjc.md              # /dcjc 命令
-│   │   └── xxfw.md              # /xxfw 命令
-│   └── rules/
-│       └── three-mechanisms.md  # Claude Code 规则
-├── skills/
-│   ├── qsbg/SKILL.md            # 请示报告 skill
-│   ├── dcjc/SKILL.md            # 督促检查 skill
-│   └── xxfw/SKILL.md            # 信息服务 skill
+├── install.sh / install.ps1     # 安装脚本
+├── .claude-plugin/plugin.json   # Claude Code 插件清单
+├── .claude/commands/            # /qsbg /dcjc /xxfw 命令
+├── skills/qsbg dcjc xxfw/       # 三个 skill
 ├── rules/                       # 各框架规则文件
-│   ├── claude-rules.md
-│   ├── cursor-rules.mdc
-│   ├── trae-rules.md
-│   ├── windsurf-rules.md
-│   └── copilot-instructions.md
-└── .github/
-    └── copilot-instructions.md
+└── .github/                     # Copilot 规则
 ```
 
----
-
-## 与已有插件共存
-
-本插件遵循三层隔离架构，不会覆盖其他插件（如 oh-my-claudecode）的配置：
-
-| 安装位置 | 策略 |
-|----------|------|
-| `AGENTS.md` | 已存在则追加（含 `<!-- BEGIN/END -->` 标记），不覆盖 |
-| `CLAUDE.md` | 已存在则只提示手动添加 `@AGENTS.md`，绝不自动修改 |
-| `skills/` | 逐目录检测，遇到同名 skill 跳过并警告 |
-| `.claude/rules/` | 独立文件，天然隔离 |
-| `.claude/commands/` | 逐文件检测，不覆盖已有命令 |
-
----
+***
 
 ## FAQ
 
-**Q: 会影响我的现有配置吗？**
-A: 不会。默认追加模式，已有文件不会被覆盖。只有显式加 `--force` 才会覆盖。
+**Q: 会影响现有配置吗？**
+不会。默认追加模式，只有 `--force` 才覆盖。
 
 **Q: 能和其他插件一起用吗？**
-A: 能。采用 rules 目录隔离 + skill 命名空间 + 条件追加，与 OMC、其他 skill 插件共存。
+能。与 OMC 等插件共存，各写各的文件。
 
-**Q: 可以只装其中一两个机制吗？**
-A: 可以。手动复制对应 skill 目录和 AGENTS.md 中的对应章节即可。
+**Q: 可以只装一两个机制吗？**
+可以。手动复制对应 skill 目录即可。
 
 **Q: 怎么卸载？**
-A: 删除项目中的 `AGENTS.md`、`CLAUDE.md`、`skills/qsbg`、`skills/dcjc`、`skills/xxfw`、`.claude/rules/three-mechanisms.md`、`.claude/commands/qsbg.md`、`.claude/commands/dcjc.md`、`.claude/commands/xxfw.md`。
 
-**Q: 支持中文以外的语言吗？**
-A: 当前规则内容为中文。欢迎贡献英文翻译。
+```bash
+rm AGENTS.md CLAUDE.md
+rm -rf skills/qsbg skills/dcjc skills/xxfw
+rm .claude/rules/three-mechanisms.md
+rm .claude/commands/qsbg.md .claude/commands/dcjc.md .claude/commands/xxfw.md
+```
 
----
+**Q: 支持英文吗？**
+当前规则内容为中文。欢迎贡献英文翻译。
+
+***
 
 ## 贡献
 
-欢迎提 Issue、PR。讨论请前往 [GitHub Discussions](https://github.com/Jack-infinity420/three-mechanisms-plugin/discussions)。
+欢迎 Issue、PR。讨论 → [GitHub Discussions](https://github.com/Jack-infinity420/three-mechanisms-plugin/discussions)。
 
 ## 许可
 
-MIT License — 随便用，随便改。
+MIT
