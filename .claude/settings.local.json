@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(xargs -0 sed -i 's/透明沟通/请示报告/g; s/质量监督/督促检查/g; s/信息同步/信息服务/g; s/沟通要实/请示要实/g; s/监督要严/督促要严/g')",
+      "Bash(git init *)",
+      "Bash(bash -n install.sh)",
+      "Bash(bash install.sh --help)",
+      "Bash(bash install.sh D:/mili_web)",
+      "Bash(bash install.sh --force D:/mili_web)",
+      "Read(//d/mili_web/**)",
+      "Bash(rm -rf AGENTS.md AGENTS.md.bak CLAUDE.md CLAUDE.md.bak skills/ .claude/rules/ .claude/commands/ .github/)",
+      "Bash(git add *)"
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "three-mechanisms",
+  "version": "1.0.0",
+  "description": "三大工作机制 — AI 智能体行为准则插件。请示报告（qsbg）、督促检查（dcjc）、信息服务（xxfw），一套跨 Claude Code / Codex / Cursor / Trae 的行为规范体系。",
+  "author": "Jack-infinity420",
+  "license": "MIT",
+  "homepage": "https://github.com/Jack-infinity420/three-mechanisms-plugin",
+  "repository": "https://github.com/Jack-infinity420/three-mechanisms-plugin",
+  "keywords": ["behavior", "discipline", "quality", "communication", "chinese"],
+  "skills": [
+    "qsbg",
+    "dcjc",
+    "xxfw"
+  ],
+  "commands": [
+    "qsbg",
+    "dcjc",
+    "xxfw"
+  ],
+  "mcpServers": {}
+}
