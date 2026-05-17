@@ -1,5 +1,11 @@
 # 三大工作机制插件
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Claude Code](https://img.shields.io/badge/Claude%20Code-v2.0%2B-blue)](https://claude.ai/code)
+[![Cursor](https://img.shields.io/badge/Cursor-supported-purple)](https://cursor.sh)
+[![Codex](https://img.shields.io/badge/Codex%20CLI-supported-orange)](https://github.com/openai/codex)
+[![TRAE](https://img.shields.io/badge/TRAE-supported-teal)](https://trae.ai)
+
 - 将科学的组织管理制度，做成 agent 插件，装在 Claude Code、Cursor 等主流 AI 编码工具上。
 - 铁一般的制度锻造铁一般的智能体。
 - 铁一般的智能体创造铁一般的生产力。
@@ -24,11 +30,7 @@
 
 > - 不懂就问，不决则报；边做边查，即错即改；阶段必结，信息必达。
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Claude Code](https://img.shields.io/badge/Claude%20Code-v2.0%2B-blue)](https://claude.ai/code)
-[![Cursor](https://img.shields.io/badge/Cursor-supported-purple)](https://cursor.sh)
-[![Codex](https://img.shields.io/badge/Codex%20CLI-supported-orange)](https://github.com/openai/codex)
-[![TRAE](https://img.shields.io/badge/TRAE-supported-teal)](https://trae.ai)
+
 
 ***
 
